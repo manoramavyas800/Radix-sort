@@ -1,0 +1,52 @@
+import java.util.Scanner;
+
+public class BlueDart {
+    static int max(int[] arr){
+        int max = arr[0];
+        for (int j : arr) {
+            if (j > max) {
+                max = j;
+            }
+        }
+        return max;
+    }
+    static void countSort(int[] arr,int place){
+        int[] count = new int[10];
+        int [] output = new int[arr.length];
+        //frequency arr
+        for (int j : arr) {
+            count[(j / place) % 10]++;
+        }
+        //prefix arr
+        for (int i = 1; i < count.length; i++) {
+            count[i] += count[i-1];
+
+        }
+        for (int i =arr.length-1;i>=0;i--) {
+            int idx = count[(arr[i]/place)%10]-1;
+            output[idx]=arr[i];
+            count[(arr[i]/place)%10]--;
+        }
+        System.arraycopy(output, 0, arr, 0, arr.length);
+    }
+    static void radixSort(int[] arr) {
+        int max = max(arr);
+        for (int place = 1; max / place > 0; place *= 10) {
+            countSort(arr, place);
+        }
+    }
+        static void printArr(int[] arr){
+            Aro.display(arr);
+    }
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        int[] arr = new int[n];
+        for (int i = 0; i < n; i++) {
+            arr[i] = sc.nextInt();
+        }
+        radixSort(arr);
+        printArr(arr);
+        sc.close();
+    }
+}
